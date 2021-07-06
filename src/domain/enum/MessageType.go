@@ -3,7 +3,7 @@ package enum
 type MessageType int
 
 const (
-	Text	MessageType = iota
+	Text MessageType = iota
 	Media
 	Bomb
 )
