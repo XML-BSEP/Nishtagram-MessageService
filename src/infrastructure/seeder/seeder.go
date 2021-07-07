@@ -111,7 +111,7 @@ func seedBlockMessages(collection *mongo.Collection, ctx context.Context) error 
 	blockMessage1 := domain.BlockMessage{
 		ID : "061d564a-3f67-423e-b201-2ac99a167985",
 		BlockedBy: domain.Profile{ ID: "e2b5f92e-c31b-11eb-8529-0242ac130003"},
-		BlockedFor: domain.Profile{ID :"23ddb1dd-4303-428b-b506-ff313071d5d7a"},
+		BlockedFor: domain.Profile{ID :"23ddb1dd-4303-428b-b506-ff313071d5d7"},
 		Timestamp: time.Now(),
 	}
 

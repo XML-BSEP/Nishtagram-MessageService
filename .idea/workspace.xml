@@ -2,25 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="279de65f-9612-4614-ba17-891682148f86" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/infrastructure/chat/wsMessage.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/infrastructure/dto/blockMessage_dto.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/infrastructure/http/handler/blockMessage_handler.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/infrastructure/http/handler/chat_handler.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/infrastructure/http/handler/messageRequestHandler.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/infrastructure/http/handler/message_handler.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/infrastructure/http/middleware/middleware.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/infrastructure/http/router/router.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/interactor/interactor.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/infrastructure/dto/user_dto.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/infrastructure/gateway/user_gateway.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/infrastructure/chat/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/chat/client.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/infrastructure/chat/connection.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/chat/connection.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/src/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/src/go.sum" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/infrastructure/chat/hub.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/chat/hub.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/dto/blockMessage_dto.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/dto/blockMessage_dto.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/http/handler/blockMessage_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/http/handler/blockMessage_handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/http/handler/message_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/http/handler/message_handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/http/router/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/http/router/router.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/infrastructure/seeder/seeder.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/seeder/seeder.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repository/messageRequest_repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/messageRequest_repository.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repository/message_repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/message_repository.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/usecase/messageRequest_usecase.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/usecase/messageRequest_usecase.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/usecase/message_usecase.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/usecase/message_usecase.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +45,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="mongo" />
     <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
@@ -63,7 +56,7 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Nishtagram-AuthService" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Nishtagram-SearchService" />
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RecentsManager">
@@ -113,9 +106,9 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/src/infrastructure/chat/hub.go</url>
-          <line>39</line>
-          <option name="timeStamp" value="18" />
+          <url>file://$PROJECT_DIR$/src/infrastructure/http/handler/blockMessage_handler.go</url>
+          <line>48</line>
+          <option name="timeStamp" value="20" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

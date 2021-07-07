@@ -11,8 +11,10 @@ type blockMessageHandler struct {
 	BlockMessageUsecase usecase.BlockMessageUsecase
 }
 
+
 type BlockMessageHandler interface {
 	Block(c *gin.Context)
+	IsBlocked(c *gin.Context)
 }
 
 func NewBlockMessageUsecase(blockMessageUsecase usecase.BlockMessageUsecase) BlockMessageHandler {
@@ -40,4 +42,15 @@ func (b *blockMessageHandler) Block(c *gin.Context) {
 
 	c.JSON(200, gin.H{"message" : "Successfully blocked"})
 
+}
+
+func (b *blockMessageHandler) IsBlocked(c *gin.Context) {
+
+	blockedBy := c.Param("blockedBy")
+	blockedFor := c.Param("blockedFor")
+
+	isBlocked, _ := b.BlockMessageUsecase.IsBlocked(c, blockedBy, blockedFor)
+
+
+	c.JSON(200, dto2.BlockDto{IsBlocked: isBlocked})
 }

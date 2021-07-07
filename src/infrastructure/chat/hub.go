@@ -37,11 +37,7 @@ func (h *Hub) Run() {
 	for {
 		select {
 		case s := <- h.register:
-			existingConnections := h.connections
-			key := s.conn.connectionId
-			if _, ok := existingConnections[key]; ok {
-				continue
-			}
+
 
 			connections := h.rooms[s.room]
 			if connections == nil {
@@ -49,7 +45,7 @@ func (h *Hub) Run() {
 				h.rooms[s.room] = connections
 			}
 			h.rooms[s.room][s.conn] = true
-			existingConnections[key] = true
+
 		case s := <- h.unregister:
 			connections := h.rooms[s.room]
 			if connections == nil {

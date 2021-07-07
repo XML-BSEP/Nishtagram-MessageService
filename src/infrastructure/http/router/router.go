@@ -18,6 +18,7 @@ func NewRouter(handler interactor.AppHandler) *gin.Engine {
 	//router.GET("/ws/:roomId", handler.Serve)
 	router.GET("/room/:roomId", handler.GetRoom)
 	router.GET("/users/:userId", handler.GetUsers)
+	router.GET("/blocked/:blockedBy/:blockedFor", handler.IsBlocked)
 
 
 	return router

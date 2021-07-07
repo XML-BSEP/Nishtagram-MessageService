@@ -2,6 +2,8 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
+	"message-service/infrastructure/dto"
+	"message-service/infrastructure/gateway"
 	"message-service/usecase"
 )
 
@@ -45,7 +47,15 @@ func (m *messageHandler) GetUsers(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, messages)
+	idsDto := dto.UserIdsDto{Ids: messages}
+	users, err := gateway.GetUserInfo(c, idsDto)
+
+	if err != nil {
+		c.JSON(400, gin.H{"message" : "Can not get user infos"})
+		return
+	}
+
+	c.JSON(200, users)
 
 }
 
