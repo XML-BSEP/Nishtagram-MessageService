@@ -14,7 +14,7 @@ type messageUsecsae struct {
 
 type MessageUsecase interface {
 	GetMessages(ctx context.Context, receiver, sender string) ([]*domain.Message, error)
-	GetFirstMessages(ctx context.Context, userId string) ([]*domain.Message, error)
+	GetUsers(ctx context.Context, userId string) ([]string, error)
 	Create(ctx context.Context, message domain.Message) (*domain.Message, error)
 }
 
@@ -28,8 +28,8 @@ func (m *messageUsecsae) GetMessages(ctx context.Context, receiver, sender strin
 	return m.MessageRepository.GetMessages(ctx, receiver, sender)
 }
 
-func (m *messageUsecsae) GetFirstMessages(ctx context.Context, userId string) ([]*domain.Message, error) {
-	return m.MessageRepository.GetFirstMessages(ctx, userId)
+func (m *messageUsecsae) GetUsers(ctx context.Context, userId string) ([]string, error) {
+	return m.MessageRepository.GetUsers(ctx, userId)
 }
 
 func (m *messageUsecsae) Create(ctx context.Context, message domain.Message) (*domain.Message, error) {

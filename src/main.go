@@ -1,15 +1,13 @@
 package main
 
 import (
-	"encoding/json"
-	"message-service/domain"
+	"github.com/gin-gonic/gin"
+	"log"
 	"message-service/infrastructure/chat"
+	router2 "message-service/infrastructure/http/router"
 	"message-service/infrastructure/mongo"
 	"message-service/infrastructure/seeder"
-	"message-service/repository"
-	"message-service/usecase"
-
-	"github.com/gin-gonic/gin"
+	interactor2 "message-service/interactor"
 )
 
 func main() {
@@ -18,7 +16,31 @@ func main() {
 	db := mongo.GetDbName()
 	seeder.SeedData(db, mongoCli, *ctx)
 
-	messageRepository := repository.NewMessageRepository(mongoCli)
+	interactor := interactor2.NewInteractor(mongoCli)
+	appHandler := interactor.NewAppHandler()
+
+	hub := chat.NewHub(interactor.NewMessageUsecase(), interactor.NewBlockMessageUsecase(), interactor.NewMessageRequestUsecase())
+	chatClient := chat.NewClient(hub)
+	go hub.Run()
+
+
+	router := router2.NewRouter(appHandler)
+
+	router.GET("/ws/:roomId/:connectionId", func(c *gin.Context) {
+		roomId := c.Param("roomId")
+		connectionId := c.Param("connectionId")
+		chatClient.ServeWs(c.Writer, c.Request, roomId, connectionId)
+	})
+
+
+
+	err := router.Run(":8052")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	/*messageRepository := repository.NewMessageRepository(mongoCli)
 	messageUsecase := usecase.NewMessageUsecase(messageRepository)
 	blockMessageRepository := repository.NewBlockMessageRepository(mongoCli)
 	blockMessageUsecase := usecase.NewBlockMessageUsecase(blockMessageRepository)
@@ -85,6 +107,6 @@ func main() {
 		chatClient.ServeWs(c.Writer, c.Request, roomId)
 	})
 
-	router.Run("127.0.0.1:8080")
+	router.Run("127.0.0.1:8080")*/
 
 }

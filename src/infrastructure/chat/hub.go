@@ -11,6 +11,7 @@ import (
 
 type Hub struct {
 	rooms map[string]map[*connection]bool
+	connections map[string]bool
 	broadcast chan message
 	register chan Subscription
 	unregister chan Subscription
@@ -25,6 +26,7 @@ func NewHub(messageUsecase usecase.MessageUsecase, blockMessageUsecase usecase.B
 		register:   make(chan Subscription),
 		unregister: make(chan Subscription),
 		rooms:      make(map[string]map[*connection]bool),
+		connections: make(map[string]bool),
 		MessageUsecase: messageUsecase,
 		BlockMessageUsecase: blockMessageUsecase,
 		MessageRequestUsecase: messageRequestUsecase,
@@ -35,6 +37,11 @@ func (h *Hub) Run() {
 	for {
 		select {
 		case s := <- h.register:
+			existingConnections := h.connections
+			key := s.conn.connectionId
+			if _, ok := existingConnections[key]; ok {
+				continue
+			}
 
 			connections := h.rooms[s.room]
 			if connections == nil {
@@ -42,6 +49,7 @@ func (h *Hub) Run() {
 				h.rooms[s.room] = connections
 			}
 			h.rooms[s.room][s.conn] = true
+			existingConnections[key] = true
 		case s := <- h.unregister:
 			connections := h.rooms[s.room]
 			if connections == nil {
@@ -55,6 +63,17 @@ func (h *Hub) Run() {
 			}
 		case m := <- h.broadcast:
 			connections := h.rooms[m.room]
+			var message domain.Message
+			if err := json.Unmarshal(m.data, &message); err != nil {
+				break
+			}
+
+			if blocked, _  := h.BlockMessageUsecase.IsBlocked(context.Background(), message.MessageTo.ID, message.MessageFrom.ID); blocked {
+				break
+			}
+			message.ID = uuid.NewString()
+			message.Timestamp = time.Now()
+			h.MessageUsecase.Create(context.Background(), message)
 			for c := range connections {
 				select {
 				case c.send <- m.data:
@@ -67,17 +86,7 @@ func (h *Hub) Run() {
 						Content: string(m.data),
 
 					}*/
-					var message domain.Message
-					if err := json.Unmarshal(m.data, &message); err != nil {
-						break
-					}
 
-					if blocked, _  := h.BlockMessageUsecase.IsBlocked(context.Background(), message.MessageTo.ID, message.MessageFrom.ID); blocked {
-						break
-					}
-					message.ID = uuid.NewString()
-					message.Timestamp = time.Now()
-					h.MessageUsecase.Create(context.Background(), message)
 				default:
 					close(c.send)
 					delete(connections, c)

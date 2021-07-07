@@ -65,7 +65,19 @@ func seedMessages(collection *mongo.Collection, ctx context.Context) error{
 		MessageTo: domain.Profile{ID: "e2b5f92e-c31b-11eb-8529-0242ac130003"},
 	}
 
+	time.Sleep(2*time.Second)
+
 	message3 := domain.Message{
+		ID: "124f443b-6a4c-4cf6-a999-6306bc518676",
+		Type: 0,
+		Timestamp: time.Now(),
+		Content: "Kako steeeeeeee?",
+		Path: "",
+		MessageFrom: domain.Profile{ID: "e2b5f92e-c31b-11eb-8529-0242ac130003"},
+		MessageTo: domain.Profile{ID: "424935b1-766c-4f99-b306-9263731518bc"},
+	}
+
+	message4 := domain.Message{
 		ID: "1acf3f3c-fb0e-491a-b5e0-e0c2fae3b700",
 		Type: 0,
 		Timestamp: time.Now(),
@@ -79,11 +91,15 @@ func seedMessages(collection *mongo.Collection, ctx context.Context) error{
 		return err
 	}
 
+	if _, err := collection.InsertOne(ctx, message3); err != nil {
+		return err
+	}
+
 	if _, err := collection.InsertOne(ctx, message2); err != nil {
 		return err
 	}
 
-	if _, err := collection.InsertOne(ctx, message3); err != nil {
+	if _, err := collection.InsertOne(ctx, message4); err != nil {
 		return err
 	}
 

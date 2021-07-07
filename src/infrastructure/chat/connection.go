@@ -8,6 +8,7 @@ import (
 type connection struct {
 	ws *websocket.Conn
 	send chan []byte
+	connectionId string
 }
 
 func (c *connection) write(mt int, payload []byte) error {

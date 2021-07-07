@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"message-service/domain"
 	"time"
 )
@@ -17,6 +18,7 @@ type messageRequestRepository struct {
 type MessageRequestRepository interface {
 	Create(ctx context.Context, message domain.Message) (*domain.Message, error)
 	IsCreated(ctx context.Context, messaege domain.Message) (bool, error)
+	GetByUserId(ctx context.Context, userId string) ([]*domain.Message, error)
 }
 
 func NewMessageRequestRepository(db *mongo.Client) MessageRequestRepository {
@@ -51,8 +53,30 @@ func (m *messageRequestRepository) IsCreated(ctx context.Context, message domain
 	}
 
 	return true, nil
-
 }
+
+func (m *messageRequestRepository) GetByUserId(ctx context.Context, userId string) ([]*domain.Message, error) {
+	_, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	var messageRequests []*domain.Message
+	findOptions := options.Find()
+
+	findOptions.SetSort(map[string]int{"timestamp" : 1})
+
+	results, err := m.collection.Find(ctx, bson.M{"message_to._id" : userId}, findOptions)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if err := results.All(ctx, &messageRequests); err != nil {
+		return nil, err
+	}
+
+	return messageRequests, nil
+}
+
 
 
 

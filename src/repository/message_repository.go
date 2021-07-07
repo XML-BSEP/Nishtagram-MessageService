@@ -19,7 +19,7 @@ type MessageRepository interface {
 
 	GetMessages(ctx context.Context, receiver, sender string) ([]*domain.Message, error)
 	Create(ctx context.Context, message domain.Message) (*domain.Message, error)
-	GetFirstMessages(ctx context.Context, userId string) ([]*domain.Message, error)
+	GetUsers(ctx context.Context, userId string) ([]string, error)
 }
 
 func NewMessageRepository(db *mongo.Client) MessageRepository {
@@ -38,8 +38,13 @@ func (m *messageRepository) GetMessages(ctx context.Context, receiver, sender st
 
 	findOptions.SetSort(map[string]int{"timestamp" : 1})
 
-	filter, err := m.collection.Find(ctx, bson.M{"message_to._id" : receiver, "message_from._id" : sender}, findOptions)
+	filter2 := bson.D{{"$or", []bson.D{
+		bson.D{{"message_to._id", sender}, {"message_from._id",receiver}},
+		bson.D{{"message_to._id",receiver}, {"message_from._id", sender}},
+	}}}
 
+
+	filter, err := m.collection.Find(ctx, filter2, findOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +70,7 @@ func (m *messageRepository) Create(ctx context.Context, message domain.Message) 
 	return &message, nil
 }
 
-func (m *messageRepository) GetFirstMessages(ctx context.Context, userId string) ([]*domain.Message, error) {
+func (m *messageRepository) GetUsers(ctx context.Context, userId string) ([]string, error) {
 	_, cancel := context.WithTimeout(ctx, 30*time.Second)
 	defer cancel()
 
@@ -73,19 +78,21 @@ func (m *messageRepository) GetFirstMessages(ctx context.Context, userId string)
 
 	findOptions.SetLimit(1)
 
-	var messages []*domain.Message
+	var userIds []string
 
-	results, err := m.collection.Find(ctx, bson.M{"message_to._id" : userId}, findOptions)
+	results, err := m.collection.Distinct(ctx, "message_from._id", bson.M{"message_to._id" : userId})
 
 	if err != nil {
 		return nil, err
 	}
 
-	if err := results.All(ctx, &messages); err != nil {
-		return nil, err
+	for _, res := range results {
+		userId := res.(string)
+		userIds = append(userIds, userId)
 	}
 
 
-	return messages, nil
+
+	return userIds, nil
 }
 
