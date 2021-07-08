@@ -13,4 +13,8 @@ type Message struct {
 	Type        enum.MessageType `bson:"type" json:"type"`
 	MessageFrom Profile          `bson:"message_from" json:"message_from"`
 	MessageTo   Profile          `bson:"message_to" json:"message_to"`
+	ImagePath   string `bson:"image_path" json:"image_path"`
+	ImageBase64 string `json:"image_base_64"`
+	Seen bool `bson:"seen" json:"seen"`
+	ResponseType enum.ResponseType `json:"response_type"`
 }

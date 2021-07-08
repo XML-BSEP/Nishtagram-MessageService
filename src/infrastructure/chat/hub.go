@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"github.com/google/uuid"
 	"message-service/domain"
+	dto2 "message-service/infrastructure/dto"
+	"message-service/infrastructure/gateway"
 	"message-service/usecase"
 	"time"
 )
@@ -67,12 +69,46 @@ func (h *Hub) Run() {
 			if blocked, _  := h.BlockMessageUsecase.IsBlocked(context.Background(), message.MessageTo.ID, message.MessageFrom.ID); blocked {
 				break
 			}
-			message.ID = uuid.NewString()
-			message.Timestamp = time.Now()
-			h.MessageUsecase.Create(context.Background(), message)
+
+			dto := dto2.FollowDTO{
+				User: dto2.ProfileDTO{ID: message.MessageTo.ID},
+				Follower: dto2.ProfileDTO{ID: message.MessageFrom.ID},
+			}
+
+			var messageBytes []byte
+			isFollowing, err := gateway.IsFollowing(nil, dto)
+			if err != nil {
+				break
+			}
+			if !isFollowing {
+				message.ID = uuid.NewString()
+				message.Timestamp = time.Now()
+				if message.Type == 2 {
+					message.Content = ""
+					path, _ := h.MessageUsecase.EncodeBase64(message.ImageBase64, message.ID, nil)
+					message.Seen = false
+					message.ImagePath = path
+				}
+				h.MessageRequestUsecase.Create(context.Background(), message)
+
+				messageBytes, _ = json.Marshal(&message)
+			} else {
+
+				message.ID = uuid.NewString()
+				message.Timestamp = time.Now()
+				if message.Type == 2 {
+					message.Content = ""
+					path, _ := h.MessageUsecase.EncodeBase64(message.ImageBase64, message.ID, nil)
+					message.Seen = false
+					message.ImagePath = path
+				}
+				h.MessageUsecase.Create(context.Background(), message)
+			}
+
+			messageBytes, _ = json.Marshal(&message)
 			for c := range connections {
 				select {
-				case c.send <- m.data:
+				case c.send <- messageBytes:
 					/*message := domain.Message{
 						ID: uuid.NewString(),
 						MessageTo: domain.Profile{ID: "e2b5f92e-c31b-11eb-8529-0242ac130003"},

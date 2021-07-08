@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func GetUserInfo(context context.Context, ids dto.UserIdsDto) ([]dto.UserDto, error) {
+func IsFollowing(context context.Context, users dto.FollowDTO) (bool, error) {
 	client := resty.New()
 
 	domain := os.Getenv("MESSAGE_DOMAIN")
@@ -17,34 +17,34 @@ func GetUserInfo(context context.Context, ids dto.UserIdsDto) ([]dto.UserDto, er
 		domain = "127.0.0.1"
 	}
 
-	var responseDto []dto.UserDto
+	var response bool
 
 	if os.Getenv("DOCKER_ENV") == "" {
 		resp, _ := client.R().
-			SetBody(ids).
+			SetBody(users).
 			EnableTrace().
 			SetContext(context).
-			Post("https://" + domain + ":8082/getSearchInfo")
+			Post("https://" + domain + ":8089/isUserFollowingUser")
 
-		err := json.Unmarshal(resp.Body(), &responseDto)
+		err := json.Unmarshal(resp.Body(), &response)
 
 		if err != nil {
-			return nil, err
+			return false, err
 		}
-		return responseDto, nil
+		return response, nil
 	} else {
 		resp, _ := client.R().
-			SetBody(ids).
+			SetBody(users).
 			EnableTrace().
 			SetContext(context).
-			Post("http://" + domain + ":8082/getSearchInfo")
+			Post("http://" + domain + ":8082/isUserFollowingUser")
 
-		err := json.Unmarshal(resp.Body(), &responseDto)
+		err := json.Unmarshal(resp.Body(), &response)
 
 		if err != nil {
-			return nil, err
+			return false, err
 		}
-		return responseDto, nil
+		return response, nil
 	}
 
 

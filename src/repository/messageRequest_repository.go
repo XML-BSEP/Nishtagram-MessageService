@@ -15,10 +15,12 @@ type messageRequestRepository struct {
 	db *mongo.Client
 }
 
+
 type MessageRequestRepository interface {
 	Create(ctx context.Context, message domain.Message) (*domain.Message, error)
 	IsCreated(ctx context.Context, messaege domain.Message) (bool, error)
 	GetByUserId(ctx context.Context, userId string) ([]*domain.Message, error)
+	Delete(ctx context.Context, messageId string) (*domain.Message, error)
 }
 
 func NewMessageRequestRepository(db *mongo.Client) MessageRequestRepository {
@@ -77,6 +79,19 @@ func (m *messageRequestRepository) GetByUserId(ctx context.Context, userId strin
 	return messageRequests, nil
 }
 
+func (m *messageRequestRepository) Delete(ctx context.Context, messageId string) (*domain.Message, error) {
+	_, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	filter := bson.M{"_id" : messageId}
+
+	var result domain.Message
+	if err := m.collection.FindOneAndDelete(ctx, filter).Decode(&result); err != nil {
+		return nil, err
+	}
+
+	return &result, nil
+}
 
 
 

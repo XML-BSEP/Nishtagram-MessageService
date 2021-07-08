@@ -16,6 +16,7 @@ type messageHandler struct {
 type MessageHandler interface {
 	GetMessages(c *gin.Context)
 	GetUsers(c *gin.Context)
+	IsAllowedToSee(c *gin.Context)
 }
 
 func NewMessageHandler(messageUsecase usecase.MessageUsecase) MessageHandler {
@@ -57,6 +58,18 @@ func (m *messageHandler) GetUsers(c *gin.Context) {
 
 	c.JSON(200, users)
 
+}
+
+func (m *messageHandler) IsAllowedToSee(c *gin.Context) {
+
+	messageId := c.Param("messageId")
+
+	if isAllowed := m.MessageUsecase.IsAllowedToSee(c, messageId); !isAllowed {
+		c.JSON(400, gin.H{"message" : "Already seen"})
+		return
+	}
+
+	c.JSON(200, gin.H{})
 }
 
 
