@@ -1,0 +1,13 @@
+{
+  "docker" : true,
+  "mongodb_uri_docker" : "mongodb://mongomessage:27017",
+  "mongodb_uri_localhost" : "mongodb://localhost:27021",
+  "server" : {
+    "address_docker" : "mongomessage",
+    "address_localhost" : "localhost",
+    "port" : 27021
+  },
+  "database" : "message_db",
+  "production_server" : {
+  }
+}
