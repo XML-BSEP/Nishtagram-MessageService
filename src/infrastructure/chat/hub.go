@@ -71,8 +71,8 @@ func (h *Hub) Run() {
 			}
 
 			dto := dto2.FollowDTO{
-				User: dto2.ProfileDTO{ID: message.MessageTo.ID},
-				Follower: dto2.ProfileDTO{ID: message.MessageFrom.ID},
+				User: dto2.ProfileDTO{ID: message.MessageFrom.ID},
+				Follower: dto2.ProfileDTO{ID: message.MessageTo.ID},
 			}
 
 			var messageBytes []byte
@@ -90,8 +90,9 @@ func (h *Hub) Run() {
 					message.ImagePath = path
 				}
 				h.MessageRequestUsecase.Create(context.Background(), message)
+				break
 
-				messageBytes, _ = json.Marshal(&message)
+
 			} else {
 
 				message.ID = uuid.NewString()
