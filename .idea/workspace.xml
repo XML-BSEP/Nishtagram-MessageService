@@ -3,7 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="279de65f-9612-4614-ba17-891682148f86" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/infrastructure/chat/hub.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/chat/hub.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/gateway/follow_gateway.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/gateway/follow_gateway.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/gateway/user_gateway.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/gateway/user_gateway.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,8 +48,8 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Nishtagram-UserService" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Nishtagram-NotificationService" />
+    <property name="settings.editor.selected.configurable" value="go.vgo" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -64,8 +65,8 @@
       <module name="Nishtagram-MessageService" />
       <working_directory value="$PROJECT_DIR$/src" />
       <kind value="FILE" />
-      <filePath value="$PROJECT_DIR$/src/main.go" />
       <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/src/main.go" />
       <method v="2" />
     </configuration>
     <recent_temporary>

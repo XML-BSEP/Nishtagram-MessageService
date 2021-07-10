@@ -11,7 +11,7 @@ import (
 func GetUserInfo(context context.Context, ids dto.UserIdsDto) ([]dto.UserDto, error) {
 	client := resty.New()
 
-	domain := os.Getenv("MESSAGE_DOMAIN")
+	domain := os.Getenv("USER_DOMAIN")
 
 	if domain == "" {
 		domain = "127.0.0.1"
