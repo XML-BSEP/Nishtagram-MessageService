@@ -11,7 +11,7 @@ import (
 func IsFollowing(context context.Context, users dto.FollowDTO) (bool, error) {
 	client := resty.New()
 
-	domain := os.Getenv("MESSAGE_DOMAIN")
+	domain := os.Getenv("FOLLOW_DOMAIN")
 
 	if domain == "" {
 		domain = "127.0.0.1"
@@ -37,7 +37,7 @@ func IsFollowing(context context.Context, users dto.FollowDTO) (bool, error) {
 			SetBody(users).
 			EnableTrace().
 			SetContext(context).
-			Post("http://" + domain + ":8082/isUserFollowingUser")
+			Post("http://" + domain + ":8089/isUserFollowingUser")
 
 		err := json.Unmarshal(resp.Body(), &response)
 
